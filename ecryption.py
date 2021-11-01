@@ -1,6 +1,7 @@
 from collections import Counter
 from random import *
 
+#ceaser encryption function using unicodes of letters
 def ceaser_encryption(shift, text):
 	unicodes_of_letters = list(map(ord, text))
 	shifted_unicodes = [uni + shift for uni in unicodes_of_letters]
@@ -8,6 +9,7 @@ def ceaser_encryption(shift, text):
 	res = ''.join(shifted_letters)
 	return res
 
+#ceaser decryption function using unicodes of letters
 def ceaser_decryption(shift, text):
 	unicodes_of_letters = list(map(ord, text))
 	shifted_unicodes = [uni - shift for uni in unicodes_of_letters]
@@ -15,6 +17,7 @@ def ceaser_decryption(shift, text):
 	res = ''.join(list_of_shifted_letters)
 	return res
 
+#ceaser hack knowing that the most common is space
 def hack_ceaser(text):
 	space_unicode = ord(' ')
 
@@ -29,14 +32,17 @@ def hack_ceaser(text):
 	res = ceaser_decryption(shift, text)
 	return res
 
+#function that crypts with the power of the shift
 def xor(symbol, shift):
     return chr(ord(symbol)^shift)
 
+#vernama encryption, new key for each symbol
 def vernama_encryption(text):
     shift = [randint(0,26) for _ in range(len(text))]
     encrypted_text = ''.join([xor(text[i], shift[i]) for i in range(len(text))])
     return encrypted_text , shift
 
+#vernama decryption
 def vernama_decryption(text, shift):
 	decrypted = ''.join([xor(text[i], shift[i]) for i in range(len(text))])
 	return decrypted
