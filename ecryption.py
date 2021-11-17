@@ -1,4 +1,24 @@
-def encrypt(k, m):
-    return ''.join(map(chr, [x + k for x in map(ord, m)]))
+from collections import Counter
 
-print(encrypt(2, 'Hello!'))
+
+def encrypt(k, m):  # шифрование текста
+    set_ords = [(x + k) % 65536 for x in map(ord, m)]
+    return ''.join(map(chr, set_ords))
+
+
+def decrypt(k, m):  # расшифрование текста
+    set_ords = [(x - k) % 65536 for x in map(ord, m)]
+    return ''.join(map(chr, set_ords))
+
+
+def hack(m):  # без ключа
+    most_common = Counter(m).most_common()[0][0]
+    key = ord(most_common) - ord(' ')
+    return decrypt(key, m)
+
+
+key = int(input('Введите ключ: '))
+text = encrypt(key, "Смогу ли я переступить или не смогу! Осмелюсь ли нагнуться и взять или нет? Тварь ли я дрожащая или право имею… ")
+print('Зашифрованный текст: ', text)
+print('Расшифрованный текст:  ', decrypt(key, text))
+print('Взломанный текст: ', hack(text))
