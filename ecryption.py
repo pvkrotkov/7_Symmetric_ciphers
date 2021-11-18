@@ -8,13 +8,10 @@ alfavit =  'ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZАБВГДЕЁЖ
 def ceaser(message):
     smeshenie = int(input('Шаг шифровки: '))    #Создаем переменную с шагом шифровки
     mess = message.upper()    #создаем переменнную, куда запишем наше сообщение
-    itog = ''    #создаем переменную для вывода итогового сообщения
+    itog = ''    #создаем переменную для вывода итогового сообщения   
     for i in mess:
-        mesto = alfavit.find(i)    #Вычисляем места символов в списке
-        new_mesto = mesto + smeshenie    #Сдвигаем символы на указанный в переменной smeshenie шаг
-    for i in mess:
-        mesto = alfavit.find(i)
-        new_mesto = mesto + smeshenie
+        mesto = alfavit.find(i) #Вычисляем места символов в списке
+        new_mesto = mesto + smeshenie#Сдвигаем символы на указанный в переменной smeshenie шаг
         if i in alfavit:
             itog += alfavit[new_mesto]  # Задаем значения в итог
         else:
