@@ -1,38 +1,46 @@
-from collections import Counter
-MAX_ORD = 65536
+from random import randint
+from re import findall
 
 
-def encrypt_caesar(key, m):
-    offset_ords = [(x + key)%MAX_ORD for x in map(ord, m)]
-    return ''.join(map(chr, offset_ords))
+def Coding(k, m): #шифровка
+    return ''.join([chr((ord(x) + k) % 65536) for x in m])
 
+def Decoding(k, m): #расшифровка
+    return ''.join([chr((ord(x) - k) % 65536) for x in m])
 
-def decrypt_caesar(key, m):
-    offset_ords = [(x - key)%MAX_ORD for x in map(ord, m)]
-    return ''.join(map(chr, offset_ords))
+def nonkey(m): #расшифровка без ключа
+    max_char = 0
+    key = 0 
+    for i in range(65536):
+        tt = len(m.split(chr((32 + i) % 65536)))
+        if tt > max_char:
+            max_char = tt
+            key = i            
+    return key
 
+def Regular(text):
+    template = r"[0-9]+"
+    return findall(template, text)
 
+def Vernam(m, tt = '', k = ''):
+    for i in m:
+            key = randint(0,32); k += str(key) + "/"
+            tt += chr((ord(i) + key - 17)%33 + ord('А'))
+    return [tt, k]
+    
+def Dever(m, k, tt = ''):
+        for index, i in enumerate(m):
+            tt += chr((ord(i) - int(Regular(k)[index]) - 17)%33 + ord('А'))
+        return tt
 
+x = 5
+a = Coding(x, 'Snap back to reality, ope there goes gravity')
+print(a)
+c = nonkey(a)
+print(Decoding(x, a))
+print(Decoding(c, a))
 
-def encrypt_vernam(key, m):
-    key = key * (len(m) // len(key)) + key[:len(m) % len(key)]
-    offset_ords = [(x ^ y)%MAX_ORD for x, y in zip(map(ord, m), map(ord, key))]
-    return ''.join(map(chr, offset_ords))
-
-
-def decrypt_vernam(key, m):
-    return encrypt_vernam(key, m)
-
-
-key = int(input('Введите ключ для Цезаря: '))
-text = encrypt_caesar(key, 'Мальчик-хулиган пять дней не мог попасть домой. Он звонил в дверь и убегал.')
-print('Зашифрованный текст Цезаря:', text)
-print()
-print('Расшифрованный текст Цезаря:', decrypt_caesar(key, text))
-print()
-key = input('Введите ключ для Вернама: ')
-text = input('Введите текст для Вернама: ')
-text = encrypt_vernam(key, text)
-print('Зашифрованный текст Вернама:', text)
-print()
-print('Расшифрованный текст Вернама:', decrypt_vernam(key, text))
+a = Vernam('You better lose yourself in the music, the moment you own it, you better never let it go')
+print(a[0])
+b = Dever(a[0], a[1])
+print(b)
